@@ -1,3 +1,4 @@
 #!/bin/bash
 git push scraper.numeracy.io:/home/scraper/scrapalicious-deploy master
+echo "Pushed"
 ssh -t scraper.numeracy.io 'cd /home/scraper/scrapalicious && git pull && sudo systemctl restart scrapalicious'
