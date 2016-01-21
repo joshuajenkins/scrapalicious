@@ -12,17 +12,20 @@ var isValidStation = function(station) {
 var returnResult = function(req, res) {
   var stationId = req.params.station
   stationId = stationId.toUpperCase()
+  
   if (isValidStation(stationId)) {
-
-    fetchData(stationId, function(data) {
-      var cleanData = cleanupData(data)
-      res.header("Content-Type", "text/plain")
-      res.send(cleanData)
-    })
-
+    returnData(req, res, stationId)
   } else {
     returnError(req, res, stationId)
   }
+}
+
+var returnData = function(req, res, stationId) {
+  fetchData(stationId, function(data) {
+    var cleanData = cleanupData(data)
+    res.header("Content-Type", "text/plain")
+    res.send(cleanData)
+  })
 }
 
 var returnError = function(req, res, stationId) {
