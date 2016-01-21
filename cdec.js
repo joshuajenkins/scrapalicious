@@ -10,9 +10,9 @@ var isValidStation = function(station) {
 }
 
 var returnResult = function(req, res) {
-  var stationId = req.params.station
+  var stationId = req.params.stationId
   stationId = stationId.toUpperCase()
-  
+
   if (isValidStation(stationId)) {
     returnData(req, res, stationId)
   } else {
