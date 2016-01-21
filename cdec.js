@@ -35,9 +35,9 @@ var returnError = function(req, res, stationId) {
 
 var fetchData = function(stationId, callback) {
   var startDate = moment().subtract(1, 'year')
-  var endDate = moment().subtract(1, 'day')
+  var endDate   = moment().subtract(1, 'day')
   var url = 'http://cdec.water.ca.gov/cgi-progs/queryCSV?station_id=' + stationId + '&sensor_num=015&dur_code=D&start_date=' + startDate.format('YYYY-MM-DD') + '&end_date=' + endDate.format('YYYY-MM-DD') + '&data_wish=View+CSV+Data'
-  
+
   fetchUrl(url, function(error, meta, body) {
     callback(body.toString())
   })
@@ -48,7 +48,7 @@ var cleanupData = function(text) {
   // remove first line
   lines.splice(0, 1)
 
-  for (var i = 0; i < lines.length; i++) {
+  for (var i = 0; i < lines.length -1; i++) {
     // Remove second "PST" col that is always "0000"
     var cols = lines[i].split(',')
     cols.splice(1, 1)
