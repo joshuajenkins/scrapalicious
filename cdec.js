@@ -31,23 +31,27 @@ var dailySensorCodes = [
   {id: 203, name: "Precipitation, incrmnt 4A-4A",     unit: "in"  }
 ]
 
-var stationDailySensors = [
-  { stationId: 'CLE', sensors: [  6,8,15,22,23,         45,         71,74,76,85              ] },
-  { stationId: 'SHA', sensors: [2,6,8,15,22,23,         45,         71,74,76,85,   94,200    ] },
-  { stationId: 'ORO', sensors: [2,6,8,15,22,23,         45,            74,76,      94,200,203] },
-  { stationId: 'FOL', sensors: [  6,8,15,22,23,         45,      70,71,74,76,85,   94,200    ] },
-  { stationId: 'SNL', sensors: [  6,  15,22,23,                           76                 ] },
-  { stationId: 'NML', sensors: [  6,8,15,22,23,         45,48,      71,74,76,85,   94,200    ] },
-  { stationId: 'EXC', sensors: [  6,  15,22,23,30,31,32,45,               76,      94,200    ] },
-  { stationId: 'DNP', sensors: [  6,  15,22,23,         45,               76,      94,200    ] },
-  { stationId: 'MIL', sensors: [  6,8,15,22,23,         45,         71,74,76,85,   94,200    ] },
-  { stationId: 'PNF', sensors: [  6,8,15,22,23,   31,32,45,   64,         76,   93,94,200,203] },
-  { stationId: 'CAS', sensors: [  6,  15,22,                                                 ] },
-  { stationId: 'PRR', sensors: [  6,  15,22,            45                                   ] }
-]
+var stationDailySensors = {
+  CLE: [  6,8,15,22,23,         45,         71,74,76,85              ],
+  SHA: [2,6,8,15,22,23,         45,         71,74,76,85,   94,200    ],
+  ORO: [2,6,8,15,22,23,         45,            74,76,      94,200,203],
+  FOL: [  6,8,15,22,23,         45,      70,71,74,76,85,   94,200    ],
+  SNL: [  6,  15,22,23,                           76                 ],
+  NML: [  6,8,15,22,23,         45,48,      71,74,76,85,   94,200    ],
+  EXC: [  6,  15,22,23,30,31,32,45,               76,      94,200    ],
+  DNP: [  6,  15,22,23,         45,               76,      94,200    ],
+  MIL: [  6,8,15,22,23,         45,         71,74,76,85,   94,200    ],
+  PNF: [  6,8,15,22,23,   31,32,45,   64,         76,   93,94,200,203],
+  CAS: [  6,  15,22,                                                 ],
+  PRR: [  6,  15,22,            45                                   ]
+}
 
 var isValidStation = function(station) {
   return validStations.indexOf(station.toUpperCase()) > -1
+}
+
+var stationHasDailySensor = function(station, sensor) {
+ return stationDailySensors[station].indexOf(sensor) > -1
 }
 
 var returnResult = function(req, res) {
