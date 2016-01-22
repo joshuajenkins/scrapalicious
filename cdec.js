@@ -132,56 +132,79 @@ var stationDailySensors = {
 
 var handler = function(req, res) {
   // parse params
-  // call func
-  // render resp
+  var validStation
+  var validSensor
+  var resp
+
+  var sensorId
+  var sensorName = req.params.sensorName
+  var stationId = req.params.stationId
+  stationId = stationId.toUpperCase()
+
+  if (isValidStation(stationId)) {
+    validStation = true
+    sensorId = stationHasDailySensor(stationId, sensorName)
+    validSensor = sensorId > -1
+  } else {
+    validStation = false
+  }
+
+  // process data
+  if (validStation && validSensor) {
+    // do work
+    var remoteData = fetchData(stationId, sensorId, function(remoteString) {
+      resp = cleanupData(remoteString, sensorId)
+      res.header("Content-Type", "text/plain")
+      res.send(resp)
+    })
+  } else {
+    // make more descriptive
+    resp = "Invalid station or sensor, here are the valid stations and sensors"
+    res.status(404).send(resp)
+  }
+  
 }
 
 var isValidStation = function(station) {
   return validStations.indexOf(station.toUpperCase()) > -1
 }
 
-var stationHasDailySensor = function(station, sensor) {
- return stationDailySensors[station].indexOf(sensor) > -1
-}
+var stationHasDailySensor = function(station, sensorShortName) {
+  var shortNameIsValid = false
+  var sensorId
 
-var returnResult = function(req, res) {
-  var stationId = req.params.stationId
-  stationId = stationId.toUpperCase()
+  for (var i = 0; i < dailySensors.length; i++) {
+    if (dailySensors[i].shortName == sensorShortName) {
+      shortNameIsValid = true
+      sensorId = dailySensors[i].id
+      break
+    }
+  }
 
-  if (isValidStation(stationId)) {
-    returnData(req, res, stationId)
+  if (shortNameIsValid) {
+    if (stationDailySensors[station].indexOf(sensorId) > -1) {
+      return sensorId
+    } else {
+      return -1
+    }
   } else {
-    returnError(req, res, stationId)
+    return -1
   }
 }
 
-var returnData = function(req, res, stationId) {
-  fetchData(stationId, function(data) {
-    var cleanData = cleanupData(data)
-    res.header("Content-Type", "text/plain")
-    res.send(cleanData)
-  })
-}
-
-var returnError = function(req, res, stationId) {
-  var errorString = stationId + ' isn\'t a valid station. The only valid stations are: \n'
-  for (var i = 0; i < validStations.length; i++) {
-    errorString += validStations[i] + ' '
-  }
-  res.status(404).send(errorString)
-}
-
-var fetchData = function(stationId, callback) {
+var fetchData = function(stationId, sensorId, callback) {
   var startDate = moment().subtract(1, 'year')
   var endDate   = moment().subtract(1, 'day')
-  var url = 'http://cdec.water.ca.gov/cgi-progs/queryCSV?station_id=' + stationId + '&sensor_num=015&dur_code=D&start_date=' + startDate.format('YYYY-MM-DD') + '&end_date=' + endDate.format('YYYY-MM-DD') + '&data_wish=View+CSV+Data'
+  var sensorIdString = '000' + sensorId
+  sensorIdString = sensorIdString.substr(-3)
+  var url = 'http://cdec.water.ca.gov/cgi-progs/queryCSV?station_id=' + stationId + '&sensor_num=' + sensorIdString + '&dur_code=D&start_date=' + startDate.format('YYYY-MM-DD') + '&end_date=' + endDate.format('YYYY-MM-DD') + '&data_wish=View+CSV+Data'
 
   fetchUrl(url, function(error, meta, body) {
     callback(body.toString())
   })
 }
 
-var cleanupData = function(text) {
+var cleanupData = function(text, sensorId) {
   var lines = text.split('\n')
   // remove first line
   lines.splice(0, 1)
@@ -197,11 +220,17 @@ var cleanupData = function(text) {
   }
 
   // replace header row with better headings
-  lines[0] = "Date,Reservoir storage (af)"
+  var unitHeading
+  for (var i = 0; i < dailySensors.length; i++) {
+    if (dailySensors[i].id == sensorId) {
+      unitHeading = dailySensors[i].name + ' (' + dailySensors[i].unit + ')'
+    }
+  }
+  lines[0] = 'Date,' + unitHeading
 
   return lines.join('\n')
 }
 
 module.exports = {
-  returnResult: returnResult
+  handler: handler
 }

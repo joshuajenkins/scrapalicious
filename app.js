@@ -6,4 +6,4 @@ app.listen(3000, function() {
   console.log('Alive, listening on port 3000')
 })
 
-app.get('/cdec/reservoir-storage/:stationId', cdec.returnResult)
+app.get('/cdec/:sensorName/:stationId', cdec.handler)
