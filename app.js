@@ -11,6 +11,5 @@ app.listen(3000, function() {
 
 app.get('/cdec/:sensorName/:stationId', cdec.handler)
 app.get('/usgs/:sensorName/:stationId', usgs.handler)
-app.get('/cdec/reservoir-storage/:stationId', cdec.returnResult)
 
 app.post('/policeviolence', policeViolence.handler)
