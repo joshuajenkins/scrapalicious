@@ -42,7 +42,7 @@ function processDependencies(dependencies) {
 	}
 
     var wapoDepend = dependencies[sources.wapo.id]
-	var wapoVersion = wapoDepend.project.currentVersionId
+	var wapoVersion = wapoDepend.project.currentVersion.id
 	var wapoWorkbook = wapoDepend.workbook
 	var wapoWorksheet = wapoWorkbook.worksheets[0]
 	for (var rowIdx = 2; rowIdx <= wapoWorksheet.maxRow; rowIdx++) {
@@ -55,7 +55,7 @@ function processDependencies(dependencies) {
 	}
 
     var guardianDepend = dependencies[sources.guardian.id]
-    var guardianVersion = guardianDepend.project.currentVersionId
+    var guardianVersion = guardianDepend.project.currentVersion.id
     var guardianWorkbook = guardianDepend.workbook
     var guardianWorksheet = guardianWorkbook.worksheets[0]
     for (var rowIdx = 2; rowIdx <= guardianWorksheet.maxRow; rowIdx++) {
@@ -68,7 +68,7 @@ function processDependencies(dependencies) {
     }
 
     var feDepend = dependencies[sources.fe.id]
-    var feVersion = feDepend.project.currentVersionId
+    var feVersion = feDepend.project.currentVersion.id
     var feWorkbook = feDepend.workbook
     var feWorksheet = feWorkbook.worksheets[0]
     for (var rowIdx = 2; rowIdx <= feWorksheet.maxRow; rowIdx++) {
