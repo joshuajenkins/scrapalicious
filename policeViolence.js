@@ -57,14 +57,16 @@ function processDependencies(dependencies) {
     var guardianDepend = dependencies[sources.guardian.id]
     var guardianVersion = guardianDepend.project.currentVersion.id
     var guardianWorkbook = guardianDepend.workbook
-    var guardianWorksheet = guardianWorkbook.sheets[0]
-    for (var rowIdx = 2; rowIdx <= guardianWorksheet.maxRow; rowIdx++) {
-        var row = guardianWorksheet.rows[rowIdx]
-        var date = parseDate(row.cells[6].v + " " + row.cells[7].v + " " + row.cells[8].v)
-        var state = row.cells[11].v
-        var name = row.cells[2].v
-        var cause = row.cells[12].v
-        addResult(date, state, name, cause, guardianVersion, rowIdx, "guardian")
+    for (var sheetIdx=0; sheetIdx <= guardianWorkbook.sheets.length; guardianWorkbook++) {
+        var guardianWorksheet = guardianWorkbook.sheets[sheetIdx]
+        for (var rowIdx = 2; rowIdx <= guardianWorksheet.maxRow; rowIdx++) {
+            var row = guardianWorksheet.rows[rowIdx]
+            var date = parseDate(row.cells[6].v + " " + row.cells[7].v + " " + row.cells[8].v)
+            var state = row.cells[11].v
+            var name = row.cells[2].v
+            var cause = row.cells[12].v
+            addResult(date, state, name, cause, guardianVersion, rowIdx, "guardian")
+        }
     }
 
     var feDepend = dependencies[sources.fe.id]
