@@ -57,7 +57,7 @@ function processDependencies(dependencies) {
     var guardianDepend = dependencies[sources.guardian.id]
     var guardianVersion = guardianDepend.project.currentVersion.id
     var guardianWorkbook = guardianDepend.workbook
-    for (var sheetIdx=0; sheetIdx <= guardianWorkbook.sheets.length; guardianWorkbook++) {
+    for (var sheetIdx=0; sheetIdx < guardianWorkbook.sheets.length; sheetIdx++) {
         var guardianWorksheet = guardianWorkbook.sheets[sheetIdx]
         for (var rowIdx = 2; rowIdx <= guardianWorksheet.maxRow; rowIdx++) {
             var row = guardianWorksheet.rows[rowIdx]
