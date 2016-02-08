@@ -6,7 +6,8 @@
   "dependencies": {
     "express": "^4.13.3",
     "fetch": "^1.0.0",
-    "moment": "^2.11.1"
+    "moment": "^2.11.1",
+    "raven": "^0.10.0"
   },
   "devDependencies": {},
   "scripts": {
