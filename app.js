@@ -13,6 +13,10 @@ if (sentryDsn) {
     console.warn("SCRAP_SENTRY_DSN not set; not reporting errors")
 }
 
+app.get('/', function(req, resp) {
+    resp.write("I'm alive!\n")
+    resp.end()
+})
 app.get('/cdec/:sensorName/:stationId', cdec.handler)
 app.get('/usgs/:sensorName/:stationId', usgs.handler)
 

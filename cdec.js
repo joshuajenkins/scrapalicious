@@ -200,7 +200,11 @@ var fetchData = function(stationId, sensorId, callback) {
   var url = 'http://cdec.water.ca.gov/cgi-progs/queryCSV?station_id=' + stationId + '&sensor_num=' + sensorIdString + '&dur_code=D&start_date=' + startDate.format('YYYY-MM-DD') + '&end_date=' + endDate.format('YYYY-MM-DD') + '&data_wish=View+CSV+Data'
 
   fetchUrl(url, function(error, meta, body) {
-    callback(body.toString())
+    if (error) {
+      throw new Error("Received error fetching url (" + url + "): " + error.toString())
+    } else {
+      callback(body.toString())
+    }
   })
 }
 
