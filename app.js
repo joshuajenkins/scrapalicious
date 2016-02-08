@@ -4,7 +4,6 @@ var raven = require('raven')
 var cdec      = require('./cdec')
 var usgs      = require('./usgs')
 var policeViolence = require('./policeViolence')
-var caWater = require('./caWater')
 
 var sentryDsn = process.env.SCRAP_SENTRY_DSN
 
@@ -16,8 +15,6 @@ if (sentryDsn) {
 
 app.get('/cdec/:sensorName/:stationId', cdec.handler)
 app.get('/usgs/:sensorName/:stationId', usgs.handler)
-
-app.get('/ca-water/resevoirs', caWater.handler)
 
 app.post('/policeviolence', policeViolence.handler)
 
