@@ -213,6 +213,9 @@ var cleanupData = function(text, sensorId) {
   // remove first line
   lines.splice(0, 1)
 
+  // reverse cron lines
+  lines.reverse()
+
   for (var i = 0; i < lines.length -1; i++) {
     // Remove second "PST" col that is always "0000"
     var cols = lines[i].split(',')
@@ -230,6 +233,7 @@ var cleanupData = function(text, sensorId) {
       unitHeading = dailySensors[i].name + ' (' + dailySensors[i].unit + ')'
     }
   }
+
   lines[0] = 'Date,' + unitHeading
 
   return lines.join('\n')
