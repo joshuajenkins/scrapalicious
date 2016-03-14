@@ -210,13 +210,20 @@ var fetchData = function(stationId, sensorId, callback) {
 
 var cleanupData = function(text, sensorId) {
   var lines = text.split('\n')
-  // remove first line
-  lines.splice(0, 1)
+  // remove first 2 lines so only data columns remain
+  lines.splice(0, 2)
 
-  // reverse cron lines
-  lines.reverse()
+  // reverse data
+  lines = lines.reverse()
 
-  for (var i = 0; i < lines.length -1; i++) {
+  // remove blank lines
+  for (var i = 0; i < lines.length; i++) {
+    if (lines[i] == '') {
+      lines.splice(i, 1)
+    }
+  }
+
+  for (var i = 0; i < lines.length; i++) {
     // Remove second "PST" col that is always "0000"
     var cols = lines[i].split(',')
     cols.splice(1, 1)
@@ -234,7 +241,7 @@ var cleanupData = function(text, sensorId) {
     }
   }
 
-  lines[0] = 'Date,' + unitHeading
+  lines.unshift('Date,' + unitHeading)
 
   return lines.join('\n')
 }
